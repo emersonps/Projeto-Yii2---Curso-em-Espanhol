@@ -17,6 +17,7 @@ use app\models\Alumnos;
 use app\models\FormSearch;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\data\Pagination;
 
 class SiteController extends Controller
 {
@@ -126,7 +127,7 @@ class SiteController extends Controller
 
     public function actionView(){
 
-        $table = new Alumnos();
+        /*$table = new Alumnos();
         $model = $table->find()->all();
 
         $form = new FormSearch;
@@ -145,9 +146,51 @@ class SiteController extends Controller
             {
                 $form->getErrors();
             }
-        }
+        }*/
 
-        return $this->render("view", ["model" => $model, "form" => $form, "search" => $search]);
+        $form = new FormSearch;
+        $msg = null;
+
+        if($form->load(Yii::$app->request->get()))
+        {
+            if($form->validate())
+            {
+                $search = Html::encode($form->q);
+                $table = Alumnos::find()
+                    ->where(["like", "id_alumno", $search])
+                    ->orWhere(["like", "nombre", $search])
+                    ->orWhere(["like", "apellidos", $search]);  
+                $count = clone $table;
+                $pages = new Pagination([
+                    "pageSize" => 5,
+                    "totalCount" => $count->count()
+                ]);
+
+                $model = $table
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
+            }
+            else
+            {
+                $form->getErrors();
+            };
+        }
+        else
+        {
+            $table = Alumnos::find();
+            $count = clone $table;
+            $pages = new Pagination([
+                "pageSize" => 1,
+                "totalCount" => $count->count(),
+            ]);
+            $model = $table
+                ->offset($pages->offset)
+                ->limit($pages->limit)
+                ->all();    
+        }
+        
+        return $this->render("view", ["model" => $model, "form" => $form, "search" => $search, "pages" => $pages]);
     }
 
     public function actionCreate(){

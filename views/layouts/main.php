@@ -41,13 +41,21 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
+            ['label' => 'Criar Aluno', 'url' => ['/site/create']],
+            ['label' => 'Validar Form.', 'url' => ['/site/validarformulario']],
+            ['label' => 'Validar Form. com Ajax', 'url' => ['/site/validarformularioajax']],
+            ['label' => 'Criar Usuario', 'url' => ['/site/register']],
+            ['label' => 'Saluda', 'url' => ['/site/saluda']],
+            //['label' => 'Formulário', 'url' => ['/site/formulario']],
+
+            Yii::$app->user->isGuest ? 
+            (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    'Logout (' . Yii::$app->user->identity->email . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()

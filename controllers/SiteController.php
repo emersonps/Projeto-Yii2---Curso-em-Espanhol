@@ -41,11 +41,12 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'user', 'admin'],
+                //Only - adiciono todas as actions as quais deve se  aplicar a permissão
+                'only' => ['logout', 'user', 'admin', 'create'],
                 'rules' => [
                     [
                         //El administrador tiene permisos sobre las siguientes acciones
-                        'actions' => ['logout', 'admin'],
+                        'actions' => ['logout', 'admin', 'create'],
                         //Esta propiedad establece que tiene permisos
                         'allow' => true,
                         //Usuarios autenticados, el signo ? es para invitados

@@ -5,6 +5,7 @@
 /* @var $model app\models\LoginForm */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Login';
@@ -28,9 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 
-        <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) ?>
+            <div class="col-md-2">
+                <?= $form->field($model, 'rememberMe')->checkbox([
+                    'template' => "<div>{input} {label}</div>\n<div class=\"col-lg-3\">{error}</div>",
+                ]) ?>
+            </div>
+            <div class="col-md-3">
+                <a href="<?= Url::toRoute(["site/recoverpass"])?>">Esqueci minha Senha</a>
+            </div>
+                
+            
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
